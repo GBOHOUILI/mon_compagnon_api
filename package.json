@@ -23,7 +23,8 @@
     "keys:generate": "node scripts/generate-keys.mjs",
     "postinstall": "prisma generate",
     "db:migrate": "prisma migrate dev",
-    "db:deploy": "prisma migrate deploy"
+    "db:deploy": "prisma migrate deploy",
+    "db:seed": "nest build && node dist/cli/seed.js"
   },
   "dependencies": {
     "@nestjs/common": "^12.0.1",
@@ -63,5 +64,6 @@
     "typescript": "^6.0.2",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^4.1.2"
-  }
+  },
+  "packageManager": "pnpm@10.33.2"
 }
