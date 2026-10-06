@@ -78,8 +78,8 @@ Prettier, pnpm, Node 24.
   `scripts/generate-keys.mjs`, `README.md`
 
 **Produces:** `Env` class and `validateEnv(raw)`; `ConfigModule` global;
-scripts `typecheck`, `keys:generate`; DBs on `localhost:5433` (dev) and
-`localhost:5434` (test).
+scripts `typecheck`, `keys:generate`; DBs on `localhost:5442` (dev) and
+`localhost:5443` (test).
 
 - [ ] **Step 1: scaffold into the repo** (it already holds `docs/`)
 
@@ -100,7 +100,7 @@ Set `"name": "mon-compagnon-api"`, add scripts
 import { validateEnv } from './env.js';
 
 const valid = {
-  DATABASE_URL: 'postgresql://u:p@localhost:5433/db',
+  DATABASE_URL: 'postgresql://u:p@localhost:5442/db',
   FRONT_ORIGIN: 'http://localhost:3000',
   JWT_PRIVATE_KEY: 'private',
   JWT_PUBLIC_KEY: 'public',
@@ -229,7 +229,7 @@ services:
       POSTGRES_USER: moncompagnon
       POSTGRES_PASSWORD: moncompagnon
       POSTGRES_DB: moncompagnon_test
-    ports: ['5434:5432']
+    ports: ['5443:5432']
     tmpfs: ['/var/lib/postgresql/data']
 volumes:
   db-data: {}
@@ -262,7 +262,7 @@ console.log('JWT keys written to .env');
 ```
 NODE_ENV=development
 PORT=4000
-DATABASE_URL="postgresql://moncompagnon:moncompagnon@localhost:5433/moncompagnon"
+DATABASE_URL="postgresql://moncompagnon:moncompagnon@localhost:5442/moncompagnon"
 FRONT_ORIGIN=http://localhost:3000
 # Production only, shared with the front: .moncompagnon.bj
 COOKIE_DOMAIN=
@@ -440,7 +440,7 @@ Object.assign(process.env, {
   NODE_ENV: 'test',
   DATABASE_URL:
     process.env.TEST_DATABASE_URL ??
-    'postgresql://moncompagnon:moncompagnon@localhost:5434/moncompagnon_test',
+    'postgresql://moncompagnon:moncompagnon@localhost:5443/moncompagnon_test',
   FRONT_ORIGIN: 'http://localhost:3000',
   JWT_PRIVATE_KEY: privateKey.export({ format: 'pem', type: 'pkcs8' }).toString(),
   JWT_PUBLIC_KEY: publicKey.export({ format: 'pem', type: 'spki' }).toString(),
@@ -455,7 +455,7 @@ import { execSync } from 'node:child_process';
 export default function setup() {
   const url =
     process.env.TEST_DATABASE_URL ??
-    'postgresql://moncompagnon:moncompagnon@localhost:5434/moncompagnon_test';
+    'postgresql://moncompagnon:moncompagnon@localhost:5443/moncompagnon_test';
   execSync('pnpm exec prisma migrate deploy', { stdio: 'inherit', env: { ...process.env, DATABASE_URL: url } });
 }
 ```
@@ -1820,11 +1820,11 @@ jobs:
           POSTGRES_USER: moncompagnon
           POSTGRES_PASSWORD: moncompagnon
           POSTGRES_DB: moncompagnon_test
-        ports: ['5434:5432']
+        ports: ['5443:5432']
         options: >-
           --health-cmd "pg_isready -U moncompagnon" --health-interval 2s --health-retries 15
     env:
-      TEST_DATABASE_URL: postgresql://moncompagnon:moncompagnon@localhost:5434/moncompagnon_test
+      TEST_DATABASE_URL: postgresql://moncompagnon:moncompagnon@localhost:5443/moncompagnon_test
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
