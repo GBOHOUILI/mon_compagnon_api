@@ -1,0 +1,23 @@
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: moncompagnon
+      POSTGRES_PASSWORD: moncompagnon
+      POSTGRES_DB: moncompagnon
+    ports: ['5442:5432']
+    volumes: ['db-data:/var/lib/postgresql/data']
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U moncompagnon']
+      interval: 2s
+      retries: 15
+  db-test:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: moncompagnon
+      POSTGRES_PASSWORD: moncompagnon
+      POSTGRES_DB: moncompagnon_test
+    ports: ['5443:5432']
+    tmpfs: ['/var/lib/postgresql/data']
+volumes:
+  db-data: {}
